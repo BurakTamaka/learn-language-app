@@ -25,13 +25,21 @@ export const SidebarItem = ({
 }: Props) =>{
     const pathname = usePathname(); {/* mevcut sayfanın URL'sini almanıza yardımcı olur. Bu, genellikle kullanıcıya gösterilen içeriği, URL'ye bağlı olarak değiştirmek veya belirli bir sayfanın URL'sini kullanarak dinamik içerik yüklemek için kullanılabilir. */}
     const active = pathname === href;
-    
-    return(
-        <Button variant={active ? "sidebarOutline" : "sidebar"} className='justify-start h-[50px]' asChild>
+    {/* asChild mantığını anla!
+        <Button variant={active ? "sidebarOutline" : "sidebar"} className='justify-start h-[50px]' asChild> 
             <Link href={href}>
                 <Image src={iconSrc} alt={label} className='mr-5' height={30} width={30}/>
                 {label}
             </Link>
-        </Button>
+        </Button>*/}
+    return(
+        
+        <Link href={href}>
+            <Button variant={active ? "sidebarOutline" : "sidebar"} className='justify-start h-[50px] w-[200px] '> {/* asChild */}
+                <Image src={iconSrc} alt={label} className='mr-5' height={30} width={30}/>
+                {label}
+            </Button>
+            </Link>
+        
     );
 }
