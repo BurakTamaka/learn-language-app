@@ -1,0 +1,48 @@
+"use client";
+
+import { toast } from "sonner";
+import { useTransition } from "react";
+import { useRouter } from "next/navigation";
+import {courses, userProgress} from "@/db/schema"
+import { upsertUserProgress } from "@/actions/user-progress";
+import { Card } from "./card";
+
+type Props = {
+    courses: typeof courses.$inferSelect[];
+    activeCoursesId?: typeof userProgress.$inferSelect.activeCourseId;
+}
+
+export const List = ({courses, activeCoursesId} : Props ) => {
+    const router = useRouter();
+    const[pending, startTransition] = useTransition();
+
+    const onClick = (id:number) => {
+        if(pending) return;
+
+        if(id === activeCoursesId){
+            return router.push("/learn");
+        }
+
+        startTransition(() => {
+            upsertUserProgress(id)
+                .catch(() => toast.error("Bir şeyler yanlış gitti"))
+        }) 
+    }
+    
+    return(
+        <div className="pt-6 grid grid-cols-2 lg:grid-cols-[repeat(auto-fill,minmax(210px,1fr))] gap-4">
+            {courses.map((course) => (
+                <Card
+                    key={course.id}
+                    id={course.id}
+                    title={course.title} 
+                    imageSrc={course.imageSrc} 
+                    onClick={onClick}
+                    disabled={pending}
+                    active={course.id === activeCoursesId}                  
+                    />
+            ))}
+
+        </div>
+    );
+};

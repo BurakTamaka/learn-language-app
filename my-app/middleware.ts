@@ -1,7 +1,8 @@
 import { clerkMiddleware } from '@clerk/nextjs/server';
 
 export default clerkMiddleware({
-    publicRoutes: ["/"],
+    publicRoutes: ["/", "/api/webhooks/stripe"],
+    
     clerk: {
         publishableKey: process.env.Clerk_API_PUBLISHABLE_KEY
     }
